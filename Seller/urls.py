@@ -15,9 +15,11 @@ Including another URLconf
 """
 from django.urls import path
 from django.urls import re_path
-from Buyer.views import *
+from Seller.views import *
 
 
 urlpatterns = [
-    path('born/', born)
+    path('born/', born),
+    path('base/', base),
+    path('rb/', registerBase),
 ]

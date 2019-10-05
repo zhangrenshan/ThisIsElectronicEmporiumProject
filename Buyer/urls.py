@@ -19,5 +19,7 @@ from Buyer.views import *
 
 
 urlpatterns = [
-    path('born/', born)
+    path('born/', born),
+    path('base/', base),
+    path('rb/', registerBase),
 ]
