@@ -1,0 +1,65 @@
+{% extends 'buyer/register_base.html' %}
+
+{% block title %}
+    买家登录
+{% endblock %}
+
+
+{% block style %}
+    <style>
+        #d1{
+            font-size: 24px;
+        }
+        #d2{
+            font-size: 16px;
+        }
+    </style>
+{% endblock %}
+
+
+{% block label01 %}
+    用户登录
+{% endblock %}
+
+
+{% block label02 %}
+    <a href="/Buyer/register/">注册</a>
+{% endblock %}
+
+
+{% block content %}
+    <div id="d1">
+        <form action="" method="post" class="reg_form clearfix" style="width: 120%">
+            {% csrf_token %}
+                <ul>
+                    <li>
+                        <label for="">
+                            <input type="email" name="email" placeholder="请输入登录邮箱" class="btn-block">
+                        </label>
+                    </li>
+                </ul>
+                <ul>
+                    <li>
+                        <label for="">
+                            <input type="password" name="password" placeholder="请设置用户密码" class="btn-block">
+                        </label>
+                    </li>
+                </ul>
+            <label for="" class="btn-block">
+                <input type="reset" value="重置信息" class="btn-warning">
+                <input type="submit" value="提交登录" class="btn-primary" style="margin-right: 33%; float: right">
+            </label>
+        </form>
+        {{ error_message }}
+        <hr>
+        <div id="d2">
+            <a class="small" href="#" style="margin-left: 10%">忘记密码?</a>
+            <a class="small" href="/Buyer/login/" style="margin-right: 10%; float: right">没有账户? 注册!</a>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block script %}
+
+{% endblock %}

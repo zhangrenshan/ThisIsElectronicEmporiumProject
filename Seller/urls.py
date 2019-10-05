@@ -22,4 +22,8 @@ urlpatterns = [
     path('born/', born),
     path('base/', base),
     path('rb/', registerBase),
+    path('register/', register),
+    path('login/', login),
+    path('index/', index),
+    re_path('^$', login),
 ]

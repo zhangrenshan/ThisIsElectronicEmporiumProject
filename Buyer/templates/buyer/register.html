@@ -1,0 +1,79 @@
+{% extends 'buyer/register_base.html' %}
+
+{% block title %}
+    买家注册
+{% endblock %}
+
+
+{% block style %}
+    <style>
+        #d1{
+            font-size: 24px;
+        }
+        #d2{
+            font-size: 16px;
+        }
+    </style>
+{% endblock %}
+
+
+{% block label01 %}
+    用户注册
+{% endblock %}
+
+
+{% block label02 %}
+    <a href="/Buyer/login/">登录</a>
+{% endblock %}
+
+
+{% block content %}
+    <div id="d1">
+        <form action="" method="post" class="reg_form clearfix" style="width: 120%">
+            {% csrf_token %}
+                <ul>
+                    <li>
+                        <label for="">
+                            <input type="email" name="email" placeholder="请输入注册邮箱" class="btn-block">
+                        </label>
+                    </li>
+                </ul>
+                <ul>
+                    <li>
+                        <label for="">
+                            <input type="text" name="username" placeholder="请输入用户昵称" class="btn-block">
+                        </label>
+                    </li>
+                </ul>
+                <ul>
+                    <li>
+                        <label for="">
+                            <input type="password" name="password01" placeholder="请设置用户密码" class="btn-block">
+                        </label>
+                    </li>
+                </ul>
+                <ul>
+                    <li>
+                        <label for="">
+                            <input type="password" name="password02" placeholder="请确认用户密码" class="btn-block">
+                        </label>
+                    </li>
+                </ul>
+            <label for="" class="btn-block">
+                <input type="reset" value="重置信息" class="btn-warning">
+                <input type="submit" value="提交注册" class="btn-primary" style="margin-right: 33%; float: right">
+            </label>
+        </form>
+        {{ error_message }}
+        <hr>
+        <div id="d2">
+            <a class="small" href="#" style="margin-left: 10%">忘记密码?</a>
+            <a class="small" href="/Buyer/login/" style="margin-right: 10%; float: right">已有账户? 登录!</a>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block script %}
+
+{% endblock %}

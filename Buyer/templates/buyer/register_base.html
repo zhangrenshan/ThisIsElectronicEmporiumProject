@@ -21,7 +21,7 @@
     <div class="r_con fr">
         <div class="reg_title clearfix">
             <h1>{% block label01 %}label01{% endblock %}</h1>
-            <a href="#">{% block label02 %}label02{% endblock %}</a>
+            {% block label02 %}<a href="#">label02</a>{% endblock %}
         </div>
         <div class="reg_form clearfix">
             {% block content %}Form表单{% endblock %}

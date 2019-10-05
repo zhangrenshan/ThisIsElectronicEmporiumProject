@@ -1,0 +1,52 @@
+{% extends 'seller/register_base.html' %}
+
+
+{% block title %}
+    登录
+{% endblock %}
+
+
+{% block style %}
+    <style>
+        #d1{
+            font-size: 24px;
+        }
+    </style>
+{% endblock %}
+
+
+{% block label %}
+    登录
+{% endblock %}
+
+
+{% block content %}
+    <div id="d1">
+        <form action="" method="post">
+            {% csrf_token %}
+            <label for="" class="btn-block">
+                <input type="text" name="email" placeholder="请输入用户邮箱" class="btn-block">
+            </label>
+            <label for="" class="btn-block">
+                <input type="password" name="password" placeholder="请输入用户密码" class="btn-block">
+            </label>
+            <label for="" class="btn-block">
+                <input type="reset" value="重置信息" class="btn-warning">
+                <input type="submit" value="提交登录" class="btn-primary" style="float: right">
+            </label>
+        </form>
+        {{ error_message }}
+        <hr>
+        <div class="text-center">
+            <a class="small" href="#">忘记密码?</a>
+        </div>
+        <div class="text-center">
+            <a class="small" href="/Seller/register/">没有账户? 注册!</a>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block script %}
+
+{% endblock %}
