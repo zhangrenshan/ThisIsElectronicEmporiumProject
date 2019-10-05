@@ -85,4 +85,7 @@ def forgotPassword(request):
 
 def index(request):
     return render(request, 'buyer/index.html', locals())
+
+
+
 # Create your views here.

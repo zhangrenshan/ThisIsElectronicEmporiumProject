@@ -1,0 +1,86 @@
+{% extends 'seller/base.html' %}
+
+
+{% block title %}
+    所有商品
+{% endblock %}
+
+
+{% block style %}
+
+{% endblock %}
+
+
+{% block label %}
+    所有商品
+{% endblock %}
+
+
+{% block content %}
+    <table class="table">
+        <tr>
+            <th class="th1">商品编号</th>
+            <th class="th1">商品名称</th>
+            <th class="th1">商品价格</th>
+            <th class="th1">商品数量</th>
+            <th class="th1">商品产地</th>
+            <th class="th1">商品有效</th>
+            <th class="th1">商品产期</th>
+            <th class="th1">商品状态</th>
+            <th class="th1">商品设置</th>
+        </tr>
+        {% for goods in goods_list %}
+            <tr>
+            <th>{{ goods.goods_number }}</th>
+            <th>{{ goods.goods_name }}</th>
+            <th>{{ goods.goods_price }}</th>
+            <th>{{ goods.goods_count }}</th>
+            <th>{{ goods.goods_location }}</th>
+            <th>{{ goods.goods_safe_date }}</th>
+            <th>{{ goods.goods_pro_time }}</th>
+            <th>{{ goods.goods_status }}</th>
+            <th>
+                <button class="btn btn-primary">修改</button>
+                {% ifequal goods.goods_status 1 %}
+                    <a href="/Seller/goods_status/0/{{ goods.id }}/" class="btn btn-warning">下架</a>
+                {% else %}
+                    <a href="/Seller/goods_status/1/{{ goods.id }}/" class="btn btn-warning">上架</a>
+                {% endifequal %}
+            </th>
+        </tr>
+        {% endfor %}
+    </table>
+    <div class="col-sm-12 col-md-5" style="margin-left: 0; width: 25%;">
+        <div class="dataTables_info" id="dataTable_info" role="status" aria-live="polite">
+        显示{{ goodss.count }}项中的{{ num }}项
+        </div>
+    </div>
+    <ul class="pagination" style="float: right; margin-right: 100px">
+        <li class="paginate_button page-item previous disabled" id="dataTable_previous">
+            <a href="#" aria-controls="dataTable" data-dt-idx="0" tabindex="0" class="page-link">
+                上一页
+            </a>
+        </li>
+        {% for p in all_goods.page_range %}
+            {% ifequal status 1 %}
+                <li class="paginate_button page-item previous">
+                    <a class="page-link" href="/Seller/goodsList/{{ p }}/1/">{{ p }}</a>
+                </li>
+            {% else %}
+                <li class="paginate_button page-item previous">
+                    <a class="page-link" href="/Seller/goodsList/{{ p }}/1/">{{ p }}</a>
+                </li>
+            {% endifequal %}
+        {% endfor %}
+        <li class="paginate_button page-item previous disabled" id="dataTable_previous">
+            <a href="#" aria-controls="dataTable" data-dt-idx="0" tabindex="0" class="page-link">
+                下一页
+            </a>
+        </li>
+    </ul>
+{% endblock %}
+
+
+{% block script %}
+
+{% endblock %}

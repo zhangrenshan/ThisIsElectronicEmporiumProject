@@ -27,4 +27,10 @@ urlpatterns = [
     path('fp/', forgotPassword),
     path('index/', index),
     re_path('^$', login),
+    path('pi/', personalInfo),
+    path('goodsType/', goodsType),
+    path('addGoods/', addGoods),
+    path('StoreInformation/', storeInformation),
+    re_path('goodsList/(?P<page>\d+)/(?P<status>[012])/', goodsList),
+    re_path('goods_status/(?P<status>\d+)/(?P<id>\d+)', goods_status),
 ]

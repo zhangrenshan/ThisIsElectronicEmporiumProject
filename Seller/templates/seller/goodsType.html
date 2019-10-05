@@ -1,0 +1,44 @@
+{% extends 'seller/base.html' %}
+
+
+{% block title %}
+    类型管理
+{% endblock %}
+
+
+{% block style %}
+
+{% endblock %}
+
+
+{% block label %}
+    类型管理
+{% endblock %}
+
+
+{% block content %}
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <input type="text" name='type_label' placeholder="请输入商品类型名称">
+        </div>
+        <div class="form-group">
+            <input type="text" name='type_description' placeholder="请输入商品类型描述">
+        </div>
+        <div class="form-group">
+            <label for="">
+                商品类型图片
+                <input type="file" name="type_picture">
+            </label>
+        </div>
+        <div class="form-group">
+            <input class="btn btn-primary btn-block" type="submit" value="提交">
+        </div>
+    </form>
+    {{ error_message }}
+{% endblock %}
+
+
+{% block script %}
+
+{% endblock %}

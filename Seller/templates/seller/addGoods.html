@@ -1,0 +1,72 @@
+{% extends 'seller/base.html' %}
+
+
+{% block title %}
+    添加商品
+{% endblock %}
+
+
+{% block style %}
+
+{% endblock %}
+
+
+{% block label %}
+    添加商品
+{% endblock %}
+
+
+{% block content %}
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <input type="text" name='goods_number' placeholder="请输入商品编号">
+        </div>
+        <div class="form-group">
+            <input type="text" name='goods_name' placeholder="请输入商品名称">
+        </div>
+        <div class="form-group">
+            <input type="text" name='goods_price' placeholder="请输入商品价格">
+        </div>
+        <div class="form-group">
+            <input type="text" name='goods_count' placeholder="请输入商品数量">
+        </div>
+        <div class="form-group">
+            <input type="text" name='goods_location' placeholder="请输入商品产地">
+        </div>
+        <div class="form-group">
+            <input type="text" name='goods_safe_date' placeholder="请输入保质时期">
+        </div>
+        <div class="form-group">
+            <input type="date" name='goods_pro_time' placeholder="请输入生产日期">
+        </div>
+        <div class="form-group">
+            <select name="goods_type">
+                <option value="0">商品类型</option>
+                {% for goods_type in goods_type_list %}
+                    <option value="{{ goods_type.id }}">{{ goods_type.type_label }}</option>
+                {% endfor %}
+
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="">
+                商品图片
+                <input type="file" name="goods_picture" placeholder="商品图片">
+            </label>
+        </div>
+        <div class="form-group">
+            <input type="radio" name='goods_status' value="True">上架
+            <input type="radio" name='goods_status' value="False">下架
+        </div>
+        <div class="form-group">
+            <input class="btn btn-primary btn-block" type="submit" value="提交">
+        </div>
+    </form>
+    {{ error_message }}
+{% endblock %}
+
+
+{% block script %}
+
+{% endblock %}
