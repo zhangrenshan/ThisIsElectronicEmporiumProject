@@ -78,6 +78,10 @@ def login(request):
     return render(request, 'seller/login.html', locals())
 
 
+def forgotPassword(request):
+    return render(request, 'seller/ForgotPassword.html', locals())
+
+
 def index(request):
     return render(request, 'seller/index.html', locals())
 # Create your views here.
