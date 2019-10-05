@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+
+# 在此配置中，指定 BASE_DIR 代表当前项目的主目录
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -25,11 +27,13 @@ SECRET_KEY = 'k_r(fx2v7e5=-v(uh$g4-d5j)!1g(=mgzvq&3xs^=q8y=f*fac'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# 设置所有ip都能进行访问
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
+# 安装app
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -37,8 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'Seller',
+    'Buyer',
 ]
-
+# 安装中间件，项目一开始还用不到
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -49,12 +55,15 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# 前台发来请求会先去项目下的XXXXX/urls.py文件进行正则匹配找到应该执行的视图函数。
 ROOT_URLCONF = 'DjangoWork.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates')
+        ],  # os.path.join(BASE_DIR, 'XXXX') 拼接路径，解决路径兼容问题
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -73,12 +82,25 @@ WSGI_APPLICATION = 'DjangoWork.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
+# 配置数据库，默认数据库为sqlite3，但我们更多用的是Mysql
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+"""
+mysql的配置
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'articleblog',
+        'HOST': 'localhost',
+        'USER': 'root',
+        'PASSWORD': '0615', # 密码接收是字符串，而且我们尽量不要把密码设置为纯数字
+    }
+}
+"""
 
 
 # Password validation
@@ -103,18 +125,34 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-hans'       # 设置语言为中国简体汉字
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'     # 设置时区为东八区上海时间
 
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False                  # 设置时区之后，需要更改为False，否则还会用系统默认的0时区
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
+# 配置静态
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+
+# 每天文件配置，负责图片上传
+MEDIA_URL = '/media/'
+# 此处static是鵆数据库图片的数位，不唯一，可以换成其他目录。如果文件名不存在，将创建。
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static')
+
+
+# 富文本编辑器
+# ckeditor上传的路径
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+# ckeditor上传图片使用的模块（需要pip安装）
+CKEDITOR_IMAGE_BACKEND = 'pillow'
