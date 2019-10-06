@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 import hashlib
 from Buyer.models import *
+from Seller.models import *
 
 
 def born(request):
@@ -13,6 +14,17 @@ def setPassword(password):
     md5.update(password.encode())
     result = md5.hexdigest()
     return result
+
+
+def loginValid(func):
+    def inner(request, *args, **kwargs):
+        cookie_id = request.COOKIES.get("id")
+        if cookie_id:
+            return func(request, *args, **kwargs)
+        else:
+            return HttpResponseRedirect("/Buyer/login/")
+
+    return inner
 
 
 def base(request):
@@ -83,9 +95,25 @@ def forgotPassword(request):
     return render(request, 'buyer/ForgotPassword.html', locals())
 
 
+@loginValid
 def index(request):
+    goods_type = GoodsType.objects.all()  # 获取所有类型
+    result = []
+    for ty in goods_type:
+        # 按照生产日期对对应类型的商品进行排序
+        goods = ty.goods_set.order_by("-goods_pro_time")
+        if len(goods) >= 4:  # 进行条件判断
+            goods = goods[:4]
+            result.append({"type": ty, "goods_list": goods})
+            print(result)
+
     return render(request, 'buyer/index.html', locals())
 
 
+@loginValid
+def detail(request, id):
+    goods = Goods.objects.get(id=int(id))
+    goods_recommend = Goods.objects.order_by('-goods_pro_time')[0:2]
+    return render(request, 'buyer/detail.html', locals())
 
 # Create your views here.

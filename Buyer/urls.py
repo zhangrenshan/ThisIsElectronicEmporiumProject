@@ -27,4 +27,5 @@ urlpatterns = [
     path('fp/', forgotPassword),
     re_path('^$', login),
     path('index/', index),
+    re_path('detail/(?P<id>\d+)/', detail),
 ]

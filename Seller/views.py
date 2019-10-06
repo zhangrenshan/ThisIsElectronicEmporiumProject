@@ -153,9 +153,9 @@ def addGoods(request):
     if request.method == 'POST':
         goods_number = request.POST.get('goods_number')
         if goods_number:
-            number = Good.objects.filter(goods_number=goods_number).first()
+            number = Goods.objects.filter(goods_number=goods_number).first()
             if not number:
-                goods = Good()
+                goods = Goods()
                 goods.goods_number = goods_number
                 goods.goods_name = request.POST.get('goods_name')
                 goods.goods_price = request.POST.get('goods_price')
@@ -190,11 +190,11 @@ from django.core.paginator import Paginator
 def goodsList(request, num=10, status=1, page=1):
     page = int(page)
     if status == '1':
-        goods = Good.objects.filter(goods_status=True)
+        goods = Goods.objects.filter(goods_status=True)
     elif status == '0':
-        goods = Good.objects.filter(goods_status=False)
+        goods = Goods.objects.filter(goods_status=False)
     else:
-        goods = Good.objects.all()
+        goods = Goods.objects.all()
     all_goods = Paginator(goods, int(num))
     goods_list = all_goods.page(page)
     return render(request, 'seller/goodsList.html', locals())
@@ -203,7 +203,7 @@ def goodsList(request, num=10, status=1, page=1):
 def goods_status(request, status, id):
     id = int(id)
     status = status
-    goods = Good.objects.filter(id=id).first()
+    goods = Goods.objects.filter(id=id).first()
     if status == '1':
         goods.goods_status = True
     else:
@@ -215,4 +215,8 @@ def goods_status(request, status, id):
 
 def storeInformation(request):
     return render(request, 'seller/storeInformation.html', locals())
+
+
+def orderList(request):
+    return render(request, 'seller/oderList.html', locals())
 # Create your views here.

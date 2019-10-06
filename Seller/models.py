@@ -19,7 +19,7 @@ class GoodsType(models.Model):
     type_picture = models.ImageField(upload_to='images')    # 类型图片
 
 
-class Good(models.Model):
+class Goods(models.Model):
     goods_number = models.CharField(max_length=11)          # 商品编号
     goods_name = models.CharField(max_length=32)            # 商品名称
     goods_price = models.FloatField()                       # 商品价格
@@ -40,4 +40,6 @@ class ValidCode(models.Model):
     code_content = models.CharField(max_length=256)         # 验证码内容
     code_time = models.DateTimeField(auto_now=True)         # 验证码时间
     code_status = models.IntegerField(default=0)            # 验证码状态  1代表使用 0代表未使用
+
+
 # Create your models here.
