@@ -42,7 +42,7 @@ def register(request):
         email = request.POST.get('email')   # 此处'email'是前端html页面中的name
         # 如果邮箱不为空
         if email:
-            user = LoginUser.objects.filter(email=email).first()
+            user = BuyerUser.objects.filter(email=email).first()
             # 如果邮箱没有被占用
             if not user:
                 password01 = request.POST.get('password01')
@@ -51,7 +51,7 @@ def register(request):
                 if password01 == password02:
                     username = request.POST.get('username')
                     # 创建用户,保存信息
-                    new_user = LoginUser()
+                    new_user = BuyerUser()
                     new_user.email = email
                     new_user.username = username
                     new_user.password = setPassword(password01)
@@ -80,6 +80,7 @@ def login(request):
                     response = HttpResponseRedirect('/Buyer/index/')
                     response.set_cookie('email', user.email)
                     response.set_cookie('id', user.id)
+                    request.session['email'] = user.email
                     return response
                 else:
                     error_message = '密码错误'
@@ -93,6 +94,15 @@ def login(request):
 
 def forgotPassword(request):
     return render(request, 'buyer/ForgotPassword.html', locals())
+
+
+def logout(request):
+    url = request.META.get("HTTP_REFERER", "/Buyer/index/")
+    response = HttpResponseRedirect(url)
+    for k in request.COOKIES:
+        response.delete_cookie(k)
+    del request.session['email']
+    return response
 
 
 @loginValid
@@ -116,4 +126,135 @@ def detail(request, id):
     goods_recommend = Goods.objects.order_by('-goods_pro_time')[0:2]
     return render(request, 'buyer/detail.html', locals())
 
+
+@loginValid
+def user_center_info(request):
+    user_id = int(request.COOKIES.get('id'))
+    user = BuyerUser.objects.get(id=user_id)
+    if request.method == 'POST':
+        phoneNumber = request.POST.get('phoneNumber')
+        address = request.POST.get('address')
+        if phoneNumber:
+            user.phoneNumber = phoneNumber
+            if address:
+                user.address = address
+        user.save()
+    return render(request, 'buyer/user_center_info.html', locals())
+
+
+@loginValid
+def user_center_order(request):
+    return render(request, 'buyer/user_center_order.html', locals())
+
+
+@loginValid
+def user_center_site(request):
+    return render(request, 'buyer/user_center_site.html', locals())
+
+
+import time
+import datetime
+
+
+@loginValid
+def pay_order(request):
+    goods_id = request.GET.get("goods_id")
+    count = request.GET.get("count")
+    if goods_id and count:
+        # 保存订单表，但是保存总价
+        order = PayOrder()
+        order.order_number = str(time.time()).replace(".","")
+        order.order_data = datetime.datetime.now()
+        order.order_user = LoginUser.objects.get(id=int(request.COOKIES.get("id"))) #订单对应的买家
+        order.save()
+        # 保存订单详情
+        # 查询商品的信息
+        goods = Goods.objects.get(id=int(goods_id))
+        order_info = OrderInfo()
+        order_info.order_id = order
+        order_info.goods_id = goods.id
+        order_info.goods_picture = goods.goods_picture
+        order_info.goods_name = goods.goods_name
+        order_info.goods_count = int(count)
+        order_info.goods_price = goods.goods_price
+        order_info.goods_total_price = goods.goods_price*int(count)
+        order_info.store_id = goods.goods_store     # 商品卖家，goods.goods_store本身就是一条卖家数据
+        order_info.save()
+        order.order_total = order_info.goods_total_price
+        order.save()
+    return render(request, "buyer/pay_order.html", locals())
+
+
+@loginValid
+def pay_order_more(request):
+    data = request.GET
+    data_item = data.items()
+    request_data = []
+    for key,value in data_item:
+        if key.startswith("check_"):
+            goods_id = key.split("_",1)[1]
+            count = data.get("count_"+goods_id)
+            request_data.append((int(goods_id),int(count)))
+    if request_data:
+        # 保存订单表，但是保存总价
+        order = PayOrder()
+        order.order_number = str(time.time()).replace(".","")
+        order.order_data = datetime.datetime.now()
+        order.order_user = LoginUser.objects.get(id=int(request.COOKIES.get("id")))     # 订单对应的买家
+        order.save()
+        # 保存订单详情
+        # 查询商品的信息
+        order_total = 0
+        for goods_id,count in request_data:
+            goods = Goods.objects.get(id=int(goods_id))
+            order_info = OrderInfo()
+            order_info.order_id = order
+            order_info.goods_id = goods.id
+            order_info.goods_picture = goods.goods_picture
+            order_info.goods_name = goods.goods_name
+            order_info.goods_count = int(count)
+            order_info.goods_price = goods.goods_price
+            order_info.goods_total_price = goods.goods_price*int(count)
+            order_info.store_id = goods.goods_store     # 商品卖家，goods.goods_store本身就是一条卖家数据
+            order_info.save()
+            order_total += order_info.goods_total_price     # 总价计算
+        order.order_total = order_total
+        order.save()
+    return render(request,"buyer/pay_order.html",locals())
+
+
+@loginValid
+def cart(request):
+    return render(request, 'buyer/cart.html', locals())
+
+
+from DjangoWork.settings import alipay_public_key_string,alipay_private_key_string
+from alipay import AliPay
+
+
+def AlipayViews(request):
+    order_number = request.GET.get("order_number")
+    order_total = request.GET.get("total")
+
+    # 实例化支付
+    alipay = AliPay(
+        appid=2016101200667734,
+        app_notify_url=None,
+        app_private_key_string=alipay_private_key_string,
+        alipay_public_key_string=alipay_public_key_string,
+        sign_type="RSA2"
+    )
+    # 实例化订单
+    order_string = alipay.api_alipay_trade_page_pay(
+        out_trade_no=order_number,  # 订单号
+        total_amount=str(order_total),  # 支付金额，是字符串
+        subject="生鲜交易",  # 支付主题
+        return_url="http://127.0.0.1:8000/Buyer/pay_result/",#结果返回的地址
+        notify_url="http://127.0.0.1:8000/Buyer/pay_result/" #订单状态发生改变后返回的地址
+    )  # 网页支付订单
+
+    # 拼接收款地址 = 支付宝网关+订单返回参数
+    result = "https://openapi.alipaydev.com/gateway.do?" + order_string
+
+    return HttpResponseRedirect(result)
 # Create your views here.

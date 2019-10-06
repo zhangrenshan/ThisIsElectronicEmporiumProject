@@ -1,0 +1,112 @@
+{% extends 'buyer/base.html' %}
+
+{% block title %}
+    用户中心
+{% endblock %}
+
+{% block style %}
+
+{% endblock %}
+
+{% block content %}
+
+	<div class="main_con clearfix">
+		<div class="left_menu_con clearfix">
+			<h3>用户中心</h3>
+			<ul>
+				<li><a href="/Buyer/uci/" class="active">· 个人信息</a></li>
+				<li><a href="/Buyer/uco/">· 全部订单</a></li>
+				<li><a href="/Buyer/ucs/">· 收货地址</a></li>
+			</ul>
+		</div>
+		<div class="right_content clearfix">
+				<div class="info_con clearfix">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <h3 class="common_title2">基本信息</h3>
+                        <ul class="user_info_list">
+                            <li>
+                                <label for="">用&nbsp;户&nbsp;名&nbsp;：
+                                    <input type="text" disabled value="{{ user.email }}" name="email">
+                                </label>
+                            </li>
+                            <li>
+                                <label for="">联系方式：
+                                    <input type="text" value="{{ user.phoneNumber }}" name="phoneNumber">
+                                </label>
+                            </li>
+                            <li>
+                                <label for="">联系地址：
+                                    <input type="text" value="{{ user.address }}" name="address">
+                                </label>
+                            </li>
+                            <li>
+                                <label for="">
+                                    <input type="submit" value="确定修改">
+                                </label>
+                            </li>
+						</ul>
+                    </form>
+				</div>
+
+				<h3 class="common_title2">最近浏览</h3>
+				<div class="has_view_list">
+					<ul class="goods_type_list clearfix">
+				<li>
+					<a href="detail.html"><img src="/static/buyer/images/goods/goods003.jpg"></a>
+					<h4><a href="detail.html">大兴大棚草莓</a></h4>
+					<div class="operate">
+						<span class="prize">￥16.80</span>
+						<span class="unit">16.80/500g</span>
+						<a href="#" class="add_goods" title="加入购物车"></a>
+					</div>
+				</li>
+
+				<li>
+					<a href="#"><img src="/static/buyer/images/goods/goods004.jpg"></a>
+					<h4><a href="#">吐鲁番梨光杏</a></h4>
+					<div class="operate">
+						<span class="prize">￥5.50</span>
+						<span class="unit">5.50/500g</span>
+						<a href="#" class="add_goods" title="加入购物车"></a>
+					</div>
+				</li>
+
+				<li>
+					<a href="#"><img src="/static/buyer/images/goods/goods005.jpg"></a>
+					<h4><a href="#">黄肉桃</a></h4>
+					<div class="operate">
+						<span class="prize">￥10.00</span>
+						<span class="unit">10.00/500g</span>
+						<a href="#" class="add_goods" title="加入购物车"></a>
+					</div>
+				</li>
+
+				<li>
+					<a href="#"><img src="/static/buyer/images/goods/goods006.jpg"></a>
+					<h4><a href="#">进口西梅</a></h4>
+					<div class="operate">
+						<span class="prize">￥28.80</span>
+						<span class="unit">28.8/500g</span>
+						<a href="#" class="add_goods" title="加入购物车"></a>
+					</div>
+				</li>
+
+				<li>
+					<a href="#"><img src="/static/buyer/images/goods/goods007.jpg"></a>
+					<h4><a href="#">香梨</a></h4>
+					<div class="operate">
+						<span class="prize">￥6.45</span>
+						<span class="unit">6.45/500g</span>
+						<a href="#" class="add_goods" title="加入购物车"></a>
+					</div>
+				</li>
+			</ul>
+		</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}
